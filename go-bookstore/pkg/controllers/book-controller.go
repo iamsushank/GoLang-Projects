@@ -13,17 +13,32 @@ import (
 var NewBook models.Book
 
 func GetBook(w http.ResponseWriter, r *http.Request) {
-	println("line 16")
 	newBooks := models.GetAllBooks()
-	println("line 18")
 	res, _ := json.Marshal(newBooks)
-	println("line 20")
 	w.Header().Set("Content-Type", "application/json")
-	println("line 22")
 	w.WriteHeader(http.StatusOK)
-	println("line 24")
 	w.Write(res)
-	println("line 26")
+}
+
+func GetTopTenBook(w http.ResponseWriter, r *http.Request) {
+	books := models.GetTopTenBook()
+	res, _ := json.Marshal(books)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
+
+func GetBookByAuthorAndName(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	name := vars["author"]
+	pub := vars["pub"]
+
+	book := models.GetBookByAuthorAndName(name, pub)
+	res, _ := json.Marshal(book)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+	//books := models.GetBookByAuthorAndName(name, pub)
 }
 
 func GetBookById(w http.ResponseWriter, r *http.Request) {
@@ -38,6 +53,10 @@ func GetBookById(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
+}
+
+func GetBookUsingStruct(w http.ResponseWriter, r *http.Request) {
+
 }
 
 func UpdateBook(w http.ResponseWriter, r *http.Request) {

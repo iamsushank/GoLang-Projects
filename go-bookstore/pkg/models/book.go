@@ -32,6 +32,25 @@ func GetAllBooks() []Book {
 	return Books
 }
 
+func GetTopTenBook() []Book {
+	var getTenBooks []Book
+	db.Model(&Book{}).Limit(10).Order("Name asc").Find(&getTenBooks)
+	return getTenBooks
+}
+
+func GetBookUsingStruct(books []Book) []Book {
+	var getBook []Book
+	db.Where(&Book{Name: "Gyz", Author: "NameAS"}).Find(&getBook)
+	return getBook
+}
+
+func GetBookByAuthorAndName(name string, pub string) []Book {
+	var getBookByAuthorAndName []Book
+	db.Where("name LIKE ? OR publication=?", "%"+name+"%", pub).Order("Name ASC").Find(&getBookByAuthorAndName)
+	return getBookByAuthorAndName
+
+}
+
 func GetBookById(Id int64) (*Book, *gorm.DB) {
 	var getBook Book
 	db := db.Where("ID=?", Id).Find(&getBook)
